@@ -1,4 +1,5 @@
 import { Toaster } from '@/components/ui/toaster'
+import ModalProvider from '@/providers/modal-provider'
 import SessionProvider from '@/providers/session-provider'
 import ThemeProvider from '@/providers/theme-provider'
 import '@/styles/globals.css'
@@ -26,8 +27,10 @@ export default async function RootLayout({
 						enableSystem
 						storageKey={'aether_x_theme'}
 					>
-						<Toaster />
-						{children}
+						<ModalProvider>
+							<Toaster />
+							{children}
+						</ModalProvider>
 					</ThemeProvider>
 				</SessionProvider>
 			</body>
