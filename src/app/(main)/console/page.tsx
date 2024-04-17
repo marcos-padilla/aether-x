@@ -13,7 +13,7 @@ export default function ConsolePage() {
 		<main>
 			<Tabs defaultValue='projects' className='rounded-none'>
 				<div className='bg-accent px-4 py-2'>
-					<TabsList className='rounded-none'>
+					<TabsList className='rounded-none container'>
 						<TabsTrigger value='projects'>
 							Projects
 						</TabsTrigger>

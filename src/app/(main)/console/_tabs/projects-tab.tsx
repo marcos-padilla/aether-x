@@ -3,7 +3,7 @@ import { Plus, PlusCircle } from 'lucide-react'
 
 export default function ProjectsTab() {
 	return (
-		<div className='flex flex-col gap-y-5'>
+		<div className='container flex flex-col gap-y-5'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-lg'>Projects</h2>
 				<Button>
