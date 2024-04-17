@@ -2,6 +2,7 @@
 
 import {
 	Form,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -22,9 +23,27 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import BottomGradient from '../_components/bottom-gradient'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, CheckCircle, XCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useToast } from '@/components/ui/use-toast'
+
+const passwordValidations = [
+	{
+		title: 'At least 1 uppercase letter',
+		validate: (password: string) => /[A-Z]/.test(password),
+	},
+	{
+		title: 'At least 1 lowercase letter',
+		validate: (password: string) => /[a-z]/.test(password),
+	},
+	{
+		title: 'At least 1 number',
+		validate: (password: string) => /[0-9]/.test(password),
+	},
+]
 
 export default function SignUpPage() {
+	const { toast } = useToast()
 	const form = useForm({
 		mode: 'onChange',
 		resolver: zodResolver(signUpSchema),
@@ -37,7 +56,30 @@ export default function SignUpPage() {
 		},
 	})
 
-	const handleSubmit = (data: SignUpSchema) => {}
+	const [passwordValidationsValues, setPasswordValidationsValues] = useState(
+		Array.from({ length: passwordValidations.length }, () => false)
+	)
+	const password = form.watch('password')
+
+	useEffect(() => {
+		setPasswordValidationsValues(
+			passwordValidations.map((validation) =>
+				validation.validate(password)
+			)
+		)
+	}, [password])
+
+	const handleSubmit = (data: SignUpSchema) => {
+		if (passwordValidationsValues.some((value) => !value)) {
+			console.log('Invalid password')
+
+			toast({
+				title: 'Invalid password',
+				description: 'Please check the password requirements',
+				variant: 'destructive',
+			})
+		}
+	}
 
 	return (
 		<Card className='max-w-md w-full'>
@@ -123,6 +165,42 @@ export default function SignUpPage() {
 										/>
 									</LabelInputContainer>
 									<FormMessage />
+									<FormDescription>
+										{passwordValidations.map(
+											(validation, index) => (
+												<div key={index}>
+													<span
+														className={`flex items-center gap-x-2 ${
+															passwordValidationsValues[
+																index
+															]
+																? 'text-green-500'
+																: 'text-red-500'
+														}`}
+													>
+														{passwordValidationsValues[
+															index
+														] ? (
+															<CheckCircle
+																size={
+																	15
+																}
+															/>
+														) : (
+															<XCircle
+																size={
+																	15
+																}
+															/>
+														)}
+														{
+															validation.title
+														}
+													</span>
+												</div>
+											)
+										)}
+									</FormDescription>
 								</FormItem>
 							)}
 						/>
