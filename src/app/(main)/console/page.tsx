@@ -11,7 +11,7 @@ import ProjectsTab from './_tabs/projects-tab'
 export default function ConsolePage() {
 	return (
 		<main>
-			<Tabs defaultValue='account' className='rounded-none'>
+			<Tabs defaultValue='projects' className='rounded-none'>
 				<div className='bg-accent px-4 py-2'>
 					<TabsList className='rounded-none'>
 						<TabsTrigger value='projects'>
