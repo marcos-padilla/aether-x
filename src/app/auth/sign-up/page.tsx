@@ -26,6 +26,8 @@ import BottomGradient from '../_components/bottom-gradient'
 import { ArrowRight, CheckCircle, XCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
+import { signIn } from 'next-auth/react'
+import { signUp } from '@/controllers/auth-controller'
 
 const passwordValidations = [
 	{
@@ -69,13 +71,27 @@ export default function SignUpPage() {
 		)
 	}, [password])
 
-	const handleSubmit = (data: SignUpSchema) => {
+	const handleSubmit = async (data: SignUpSchema) => {
 		if (passwordValidationsValues.some((value) => !value)) {
-			console.log('Invalid password')
-
 			toast({
 				title: 'Invalid password',
 				description: 'Please check the password requirements',
+				variant: 'destructive',
+			})
+			return
+		}
+		const res = await signUp(data)
+		if (res.success) {
+			signIn('credentials', {
+				email: data.email,
+				password: data.password,
+				callbackUrl: '/console',
+				redirect: true,
+			})
+		} else {
+			toast({
+				title: 'Error creating your account',
+				description: res.message,
 				variant: 'destructive',
 			})
 		}
