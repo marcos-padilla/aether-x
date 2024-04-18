@@ -4,6 +4,7 @@ import { CustomServerResponse, ProjectSchema } from '@/lib/types'
 import { getCurrentUser } from './user-controller'
 import { Project } from '@prisma/client'
 import db from '@/lib/db'
+import { cookies } from 'next/headers'
 
 export const createProject = async (
 	data: ProjectSchema
@@ -37,6 +38,7 @@ export const createProject = async (
 		data: project,
 	}
 }
+
 export const updateProject = async (id: string, data: ProjectSchema) => {
 	const user = await getCurrentUser()
 	if (!user) {
@@ -68,4 +70,20 @@ export const updateProject = async (id: string, data: ProjectSchema) => {
 		success: true,
 		data: updatedProject,
 	}
+}
+
+export const getProjects = async () => {
+	cookies()
+	const user = await getCurrentUser()
+	if (!user) {
+		return null
+	}
+
+	const projects = await db.project.findMany({
+		where: {
+			userId: user.id,
+		},
+	})
+
+	return projects
 }
