@@ -63,11 +63,7 @@ model User {
   otpBase32        String?
   otpEnabled       Boolean           @default(false)
   verificationCode VerificationCode?
-  businessId       String?
-  roleId           String?
-
-  @@index([businessId])
-  @@index([roleId])
+  Projects         Project[]
 }
 
 model VerificationCode {
@@ -81,4 +77,11 @@ model VerificationCode {
 
   @@unique([userId])
   @@index([userId])
+}
+
+model Project {
+  id     String @id @default(uuid())
+  name   String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }

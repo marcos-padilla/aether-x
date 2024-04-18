@@ -20,11 +20,11 @@ export type ExtendedUser = User & {
 	accounts: Account[]
 }
 
-export type CustomServerResponse =
+export type CustomServerResponse<T> =
 	| {
 			success: boolean
 			message?: string
-			data?: any
+			data?: T
 	  }
 	| null
 	| undefined

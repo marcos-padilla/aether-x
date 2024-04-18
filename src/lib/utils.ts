@@ -5,12 +5,6 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-export function generateRandomBase32() {
-	const buffer = crypto.randomBytes(15)
-	const base32 = encode(buffer).replace(/=/g, '').substring(0, 24)
-	return base32
-}
-
 export const wait = (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms))
 

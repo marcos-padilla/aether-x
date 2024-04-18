@@ -1,6 +1,13 @@
 'use client'
 
+import { createProject, updateProject } from '@/controllers/project-controller'
+import { projectSchema } from '@/lib/schemas'
+import { CustomServerResponse, ProjectSchema } from '@/lib/types'
+import { filterUndefiedValues } from '@/lib/utils'
 import { useModal } from '@/providers/modal-provider'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Loading from '../globals/loading'
 import { Button } from '../ui/button'
@@ -21,24 +28,7 @@ import {
 	FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
-import { Label } from '../ui/label'
-import { Separator } from '../ui/separator'
-import { Textarea } from '../ui/textarea'
 import { useToast } from '../ui/use-toast'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '../ui/select'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { filterUndefiedValues } from '@/lib/utils'
-import { CustomServerResponse, ProjectSchema } from '@/lib/types'
-import { projectSchema } from '@/lib/schemas'
-import { createProject, updateProject } from '@/controllers/project-controller'
 
 interface ProjectFormProps {
 	mode?: 'create' | 'edit'
@@ -68,7 +58,7 @@ export default function ProjectForm({
 
 	const handleSubmit = async (data: ProjectSchema) => {
 		if (mode === 'create') {
-			const res = (await createProject(data)) as CustomServerResponse
+			const res = await createProject(data)
 			if (res?.success) {
 				toast({
 					title: 'Project Created',
@@ -76,21 +66,19 @@ export default function ProjectForm({
 				})
 				setClose()
 				form.reset()
-				router.push(`/projects/${res.data.id}`)
+				router.push(`/projects/${res.data!.id}`)
 			} else {
 				toast({
 					title: 'Error',
 					description:
+						res?.message ||
 						'An error occurred while creating the project',
 					variant: 'destructive',
 				})
 			}
 		} else if (mode === 'edit') {
 			if (project?.id) {
-				const res = (await updateProject(
-					project.id,
-					data
-				)) as CustomServerResponse
+				const res = await updateProject(project.id, data)
 				if (res?.success) {
 					toast({
 						title: 'Project Updated',
