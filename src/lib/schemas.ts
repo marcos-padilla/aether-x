@@ -29,3 +29,7 @@ export const signInSchema = z.object({
 		message: 'Password must be greather than 8 characteres',
 	}),
 })
+
+export const projectSchema = z.object({
+	name: z.string().min(1, { message: 'Name is required' }),
+})
