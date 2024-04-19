@@ -16,8 +16,10 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { ExtendedProject } from '@/lib/types'
-import { Box, Database } from 'lucide-react'
+import { Box, ChevronDown, Database, Eye, Plus, Trash2 } from 'lucide-react'
 import CreateDatabaseButton from './create-database-button'
+
+import DatabaseDropdownMenu from './database-dropdown-menu'
 
 export default function Overview({ project }: { project: ExtendedProject }) {
 	return (
@@ -114,14 +116,29 @@ export default function Overview({ project }: { project: ExtendedProject }) {
 							Database
 						</CardTitle>
 						{project.Database && (
-							<span className='text-sm truncate text-muted-foreground'>
-								{project.Database.name}
-							</span>
+							<DatabaseDropdownMenu project={project} />
 						)}
 					</CardHeader>
 					<CardContent className='flex flex-col'>
 						{project.Database ? (
-							<div></div>
+							<div className='flex justify-between'>
+								<div className='flex items-center gap-x-1'>
+									<span className='text-2xl font-bold'>
+										0
+									</span>
+									<span className='text-sm text-muted-foreground'>
+										Collections
+									</span>
+								</div>
+								<Button
+									size={'sm'}
+									variant={'outline'}
+									className='gap-x-1'
+								>
+									<Plus />
+									Create Collection
+								</Button>
+							</div>
 						) : (
 							<div className='flex justify-end'>
 								<CreateDatabaseButton

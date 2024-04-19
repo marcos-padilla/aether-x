@@ -13,6 +13,9 @@ import { DatabaseSchema } from '@/lib/types'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useModal } from '@/providers/modal-provider'
+import { createDatabase } from '@/controllers/database-controller'
+import { useToast } from '../ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 export default function CreateDatabaseForm({
 	projectId,
@@ -20,6 +23,9 @@ export default function CreateDatabaseForm({
 	projectId: string
 }) {
 	const { setClose } = useModal()
+	const { toast } = useToast()
+	const router = useRouter()
+
 	const form = useForm({
 		mode: 'onChange',
 		resolver: zodResolver(databaseSchema),
@@ -28,7 +34,19 @@ export default function CreateDatabaseForm({
 		},
 	})
 
-	const handleSubmit = async (data: DatabaseSchema) => {}
+	const handleSubmit = async (data: DatabaseSchema) => {
+		const res = await createDatabase(projectId, data)
+		if (res.success) {
+			setClose()
+			router.refresh()
+		} else {
+			toast({
+				title: 'Error while creating the database',
+				description: res.message,
+				variant: 'destructive',
+			})
+		}
+	}
 
 	return (
 		<Card className='border-none'>
