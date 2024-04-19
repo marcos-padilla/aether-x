@@ -66,7 +66,7 @@ export default function ProjectForm({
 				})
 				setClose()
 				form.reset()
-				router.push(`/projects/${res.data!.id}`)
+				router.push(`/console/projects/${res.data!.id}`)
 			} else {
 				toast({
 					title: 'Error',

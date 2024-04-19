@@ -87,3 +87,39 @@ export const getProjects = async () => {
 
 	return projects
 }
+
+export const deleteProject = async (id: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return null
+	}
+	const projectToDelete = await db.project.findFirst({
+		where: {
+			id,
+		},
+	})
+
+	if (!projectToDelete) {
+		return {
+			success: false,
+			message: 'Project not found',
+		}
+	}
+
+	if (projectToDelete.userId !== user.id) {
+		return {
+			success: false,
+			message: 'You are not allowed to delete this project',
+		}
+	}
+
+	await db.project.delete({
+		where: {
+			id,
+		},
+	})
+
+	return {
+		success: true,
+	}
+}

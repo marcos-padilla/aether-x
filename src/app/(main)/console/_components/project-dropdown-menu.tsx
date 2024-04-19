@@ -22,10 +22,34 @@ import {
 import { cn } from '@/lib/utils'
 import CustomModal from '@/components/modals/custom-modal'
 import ProjectForm from '@/components/forms/project-form'
-export default function ProjectDropdownMenu({ project }: { project: Project }) {
-	const { setOpen } = useModal()
+import { deleteProject } from '@/controllers/project-controller'
+import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
 
-	const handleDelete = () => {}
+interface ProjectDropdownMenuProps {
+	project: Project
+}
+
+export default function ProjectDropdownMenu({
+	project,
+}: ProjectDropdownMenuProps) {
+	const { setOpen } = useModal()
+	const { toast } = useToast()
+	const router = useRouter()
+
+	const handleDelete = async () => {
+		const res = await deleteProject(project.id)
+		if (res?.success) {
+			setOpen(null)
+			router.refresh()
+		} else {
+			toast({
+				title: 'Error deleting project',
+				description: res?.message,
+				variant: 'destructive',
+			})
+		}
+	}
 
 	return (
 		<div onClick={(e) => e.stopPropagation()}>
