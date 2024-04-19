@@ -1,4 +1,16 @@
+import {
+	createCollection,
+	updateCollection,
+} from '@/controllers/collection-controller'
+import { collectionSchema } from '@/lib/schemas'
+import { CollectionSchema } from '@/lib/types'
+import { filterUndefiedValues } from '@/lib/utils'
+import { useModal } from '@/providers/modal-provider'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { Button } from '../ui/button'
 import {
 	Card,
 	CardContent,
@@ -7,24 +19,8 @@ import {
 	CardTitle,
 } from '../ui/card'
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { collectionSchema, databaseSchema } from '@/lib/schemas'
-import { CollectionSchema, DatabaseSchema } from '@/lib/types'
 import { Input } from '../ui/input'
-import { Button } from '../ui/button'
-import { useModal } from '@/providers/modal-provider'
-import {
-	createDatabase,
-	updateDatabase,
-} from '@/controllers/database-controller'
 import { useToast } from '../ui/use-toast'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { filterUndefiedValues } from '@/lib/utils'
-import {
-	createCollection,
-	updateCollection,
-} from '@/controllers/collection-controller'
 
 interface CollectionFormProps {
 	databaseId: string

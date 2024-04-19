@@ -125,7 +125,10 @@ export default function Overview({ project }: { project: ExtendedProject }) {
 							<div className='flex justify-between'>
 								<div className='flex items-center gap-x-1'>
 									<span className='text-2xl font-bold'>
-										0
+										{
+											project.Database
+												.Collections.length
+										}
 									</span>
 									<span className='text-sm text-muted-foreground'>
 										Collections

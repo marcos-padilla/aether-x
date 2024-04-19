@@ -100,7 +100,11 @@ export const getProject = async (id: string) => {
 		},
 		include: {
 			Platforms: true,
-			Database: true,
+			Database: {
+				include: {
+					Collections: true,
+				},
+			},
 		},
 	})
 

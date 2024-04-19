@@ -8,7 +8,14 @@ import {
 	signUpSchema,
 } from './schemas'
 import { Session } from 'next-auth'
-import { Account, Database, Platform, Project, User } from '@prisma/client'
+import {
+	Account,
+	Collection,
+	Database,
+	Platform,
+	Project,
+	User,
+} from '@prisma/client'
 
 export type TODO = any
 
@@ -30,9 +37,13 @@ export type ExtendedUser = User & {
 	accounts: Account[]
 }
 
+export type ExtendedDatabase = Database & {
+	Collections: Collection[]
+}
+
 export type ExtendedProject = Project & {
 	Platforms: Platform[]
-	Database: Database | null
+	Database: ExtendedDatabase | null
 }
 
 export type CustomServerResponse<T> =
