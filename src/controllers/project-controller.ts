@@ -5,6 +5,7 @@ import { getCurrentUser } from './user-controller'
 import { Project } from '@prisma/client'
 import db from '@/lib/db'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export const createProject = async (
 	data: ProjectSchema
@@ -86,6 +87,28 @@ export const getProjects = async () => {
 	})
 
 	return projects
+}
+
+export const getProject = async (id: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return null
+	}
+	const project = await db.project.findFirst({
+		where: {
+			id,
+		},
+	})
+
+	if (!project) {
+		return redirect('/404')
+	}
+
+	if (project.userId !== user.id) {
+		return redirect('/403')
+	}
+
+	return project
 }
 
 export const deleteProject = async (id: string) => {
