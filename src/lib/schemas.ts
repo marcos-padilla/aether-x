@@ -33,3 +33,8 @@ export const signInSchema = z.object({
 export const projectSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 })
+
+export const platformSchema = z.object({
+	name: z.string().min(1, { message: 'Platform name is required' }),
+	hostname: z.string().min(1, { message: 'Hostname is required' }),
+})

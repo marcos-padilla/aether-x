@@ -1,5 +1,10 @@
 import * as z from 'zod'
-import { projectSchema, signInSchema, signUpSchema } from './schemas'
+import {
+	platformSchema,
+	projectSchema,
+	signInSchema,
+	signUpSchema,
+} from './schemas'
 import { Session } from 'next-auth'
 import { Account, User } from '@prisma/client'
 
@@ -9,6 +14,7 @@ export type TODO = any
 export type SignUpSchema = z.infer<typeof signUpSchema>
 export type SignInSchema = z.infer<typeof signInSchema>
 export type ProjectSchema = z.infer<typeof projectSchema>
+export type PlatformSchema = z.infer<typeof platformSchema>
 
 //Next auth
 export type ExtendedSession = Session & {

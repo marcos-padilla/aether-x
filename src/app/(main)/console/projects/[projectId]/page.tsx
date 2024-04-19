@@ -1,7 +1,3 @@
-import ActionTooltip from '@/components/globals/action-tooltip'
-import { getProject } from '@/controllers/project-controller'
-import { redirect } from 'next/navigation'
-import ProjectIdSpan from './_components/project-id-span'
 import {
 	Card,
 	CardContent,
@@ -10,7 +6,11 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { getProject } from '@/controllers/project-controller'
 import { Plus } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import ProjectIdSpan from './_components/project-id-span'
+import AddWebPlatformButton from './_components/add-web-platform-button'
 
 export default async function ProjectIdPage({
 	params,
@@ -49,10 +49,7 @@ export default async function ProjectIdPage({
 									our SDK
 								</h3>
 							</div>
-							<button className='border rounded-md flex items-center justify-center px-2 py-2 gap-2 hover:bg-accent transition-all duration-300'>
-								Web
-								<Plus />
-							</button>
+							<AddWebPlatformButton />
 						</div>
 						<div className='my-14 border-t relative'>
 							<span className='absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 px-2 bg-background'>
