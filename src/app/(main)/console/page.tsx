@@ -8,6 +8,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import ProjectsTab from './_tabs/projects-tab'
+import { Suspense } from 'react'
 export default function ConsolePage() {
 	return (
 		<main>
@@ -26,7 +27,9 @@ export default function ConsolePage() {
 				</div>
 				<div className='p-4'>
 					<TabsContent value='projects'>
-						<ProjectsTab />
+						<Suspense fallback={<ProjectsTab.Skeleton />}>
+							<ProjectsTab />
+						</Suspense>
 					</TabsContent>
 					<TabsContent value='password'></TabsContent>
 				</div>

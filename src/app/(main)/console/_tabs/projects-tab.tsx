@@ -7,6 +7,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getProjects } from '@/controllers/project-controller'
 import {
 	Edit,
@@ -70,6 +71,22 @@ export default async function ProjectsTab() {
 					<span className=''>Add new project</span>
 				</NewProyectButton>
 			</div>
+		</div>
+	)
+}
+
+ProjectsTab.Skeleton = function ProjectsTabSkeleton() {
+	return (
+		<div className='flex flex-wrap gap-4'>
+			{Array.from({ length: 10 })?.map((_, index) => (
+				<Skeleton
+					key={index}
+					className='rounded-md w-96 aspect-video'
+					style={{
+						animationDelay: `${index * 0.1}s`,
+					}}
+				/>
+			))}
 		</div>
 	)
 }

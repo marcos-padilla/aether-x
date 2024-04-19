@@ -74,6 +74,8 @@ export const updateProject = async (id: string, data: ProjectSchema) => {
 
 export const getProjects = async () => {
 	cookies()
+	//delay this function to simulate a real request
+	await new Promise((resolve) => setTimeout(resolve, 5000))
 	const user = await getCurrentUser()
 	if (!user) {
 		return null
