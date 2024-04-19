@@ -43,7 +43,7 @@ export type ExtendedDatabase = Database & {
 
 export type ExtendedProject = Project & {
 	Platforms: Platform[]
-	Database: ExtendedDatabase | null
+	Databases: ExtendedDatabase[]
 }
 
 export type CustomServerResponse<T> =

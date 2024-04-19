@@ -114,28 +114,33 @@ export default function Overview({ project }: { project: ExtendedProject }) {
 					<CardHeader className='flex flex-row justify-between gap-x-2'>
 						<CardTitle className='flex items-center gap-x-2 text-sm '>
 							<Database />
-							Database
+							Databases
 						</CardTitle>
-						{project.Database && (
+						{/* 	{project.Database && (
 							<DatabaseDropdownMenu project={project} />
-						)}
+						)} */}
 					</CardHeader>
 					<CardContent className='flex flex-col'>
-						{project.Database ? (
+						{project.Databases.length > 0 ? (
 							<div className='flex justify-between'>
 								<div className='flex items-center gap-x-1'>
 									<span className='text-2xl font-bold'>
-										{
-											project.Database
-												.Collections.length
-										}
+										{project.Databases.reduce(
+											(acc, db) =>
+												acc +
+												db.Collections
+													.length,
+											0
+										)}
 									</span>
 									<span className='text-sm text-muted-foreground'>
-										Collections
+										Total Collections
 									</span>
 								</div>
 								<CreateCollectionButton
-									databaseId={project.Database.id}
+									databaseId={
+										project.Databases[0].id
+									}
 								/>
 							</div>
 						) : (

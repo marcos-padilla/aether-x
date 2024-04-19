@@ -4,6 +4,7 @@ import { DatabaseSchema } from '@/lib/types'
 import { getCurrentUser } from './user-controller'
 import { redirect } from 'next/navigation'
 import db from '@/lib/db'
+import { Database } from 'lucide-react'
 
 export const createDatabase = async (
 	projectId: string,
@@ -19,7 +20,7 @@ export const createDatabase = async (
 			id: projectId,
 		},
 		include: {
-			Database: true,
+			Databases: true,
 		},
 	})
 
@@ -34,7 +35,7 @@ export const createDatabase = async (
 		}
 	}
 
-	if (project.Database) {
+	if (project.Databases.some((db) => db.name === data.name)) {
 		return {
 			success: false,
 			message: 'A Database already exists for this project',
@@ -65,7 +66,7 @@ export const deleteDatabase = async (projectId: string, databaseId: string) => {
 			id: projectId,
 		},
 		include: {
-			Database: true,
+			Databases: true,
 		},
 	})
 
@@ -80,14 +81,7 @@ export const deleteDatabase = async (projectId: string, databaseId: string) => {
 		}
 	}
 
-	if (!project.Database) {
-		return {
-			success: false,
-			message: 'No database found for this project',
-		}
-	}
-
-	if (project.Database.id !== databaseId) {
+	if (!project.Databases.some((db) => db.id === databaseId)) {
 		return {
 			success: false,
 			message: 'Database not found',
@@ -120,7 +114,7 @@ export const updateDatabase = async (
 			id: projectId,
 		},
 		include: {
-			Database: true,
+			Databases: true,
 		},
 	})
 
@@ -135,7 +129,7 @@ export const updateDatabase = async (
 		}
 	}
 
-	if (!project.Database || project.Database.id !== databaseId) {
+	if (!project.Databases.some((db) => db.id === databaseId)) {
 		return {
 			success: false,
 			message: 'Database not found',
@@ -155,4 +149,26 @@ export const updateDatabase = async (
 		success: true,
 		data: database,
 	}
+}
+
+export const getDatabases = async (projectId: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return redirect('/auth/sign-in')
+	}
+
+	const database = await db.database.findMany({
+		where: {
+			projectId,
+			Project: {
+				userId: user.id,
+			},
+		},
+		include: {
+			Collections: true,
+			Project: true,
+		},
+	})
+
+	return database
 }

@@ -85,23 +85,29 @@ model Project {
   user      User       @relation(fields: [userId], references: [id])
   userId    String
   Platforms Platform[]
-  Database  Database?
+  Databases Database[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Platform {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
   hostname  String
-  Project   Project @relation(fields: [projectId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id])
   projectId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Database {
   id          String       @id @default(uuid())
   name        String
   Project     Project      @relation(fields: [projectId], references: [id])
-  projectId   String       @unique
+  projectId   String
   Collections Collection[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Collection {
@@ -109,6 +115,8 @@ model Collection {
   name       String
   Database   Database @relation(fields: [databaseId], references: [id])
   databaseId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([name, databaseId])
 }
