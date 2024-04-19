@@ -85,6 +85,7 @@ model Project {
   user      User       @relation(fields: [userId], references: [id])
   userId    String
   Platforms Platform[]
+  Database  Database?
 }
 
 model Platform {
@@ -93,4 +94,11 @@ model Platform {
   hostname  String
   Project   Project @relation(fields: [projectId], references: [id])
   projectId String
+}
+
+model Database {
+  id        String  @id @default(uuid())
+  name      String
+  Project   Project @relation(fields: [projectId], references: [id])
+  projectId String  @unique
 }

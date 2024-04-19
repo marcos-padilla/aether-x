@@ -1,17 +1,8 @@
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 import { getProject } from '@/controllers/project-controller'
-import { Plus } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import GetStarted from './_components/get-started'
 import ProjectIdSpan from './_components/project-id-span'
-import AddWebPlatformButton from './_components/add-web-platform-button'
-import GetStartedComponent from './_components/get-started-component'
+import Overview from './_components/overview'
 
 export default async function ProjectIdPage({
 	params,
@@ -32,11 +23,13 @@ export default async function ProjectIdPage({
 					</div>
 				</div>
 			</div>
-			{project.Platforms.length === 0 ? (
-				<GetStartedComponent projectId={project.id} />
-			) : (
-				<div>Hello World</div>
-			)}
+			<div className='container -mt-5'>
+				{project.Platforms.length === 0 ? (
+					<GetStarted projectId={project.id} />
+				) : (
+					<Overview project={project} />
+				)}
+			</div>
 		</div>
 	)
 }

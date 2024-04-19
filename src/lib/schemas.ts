@@ -38,3 +38,15 @@ export const platformSchema = z.object({
 	name: z.string().min(1, { message: 'Platform name is required' }),
 	hostname: z.string().min(1, { message: 'Hostname is required' }),
 })
+
+export const databaseSchema = z.object({
+	name: z
+		.string()
+		.min(1, { message: 'Database name is required' })
+		.refine((data) => data.length <= 30, {
+			message: 'Database name must be less than 30 characters',
+		})
+		.refine((data) => /^[a-zA-Z0-9_]*$/.test(data), {
+			message: 'Database name must be alphanumeric',
+		}),
+})
