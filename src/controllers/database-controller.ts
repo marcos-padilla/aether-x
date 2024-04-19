@@ -104,3 +104,55 @@ export const deleteDatabase = async (projectId: string, databaseId: string) => {
 		success: true,
 	}
 }
+
+export const updateDatabase = async (
+	projectId: string,
+	databaseId: string,
+	data: DatabaseSchema
+) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return redirect('/auth/sign-in')
+	}
+
+	const project = await db.project.findFirst({
+		where: {
+			id: projectId,
+		},
+		include: {
+			Database: true,
+		},
+	})
+
+	if (!project) {
+		return redirect('/404')
+	}
+
+	if (project.userId !== user.id) {
+		return {
+			success: false,
+			message: 'You are not authorized to perform this action',
+		}
+	}
+
+	if (!project.Database || project.Database.id !== databaseId) {
+		return {
+			success: false,
+			message: 'Database not found',
+		}
+	}
+
+	const database = await db.database.update({
+		where: {
+			id: databaseId,
+		},
+		data: {
+			...data,
+		},
+	})
+
+	return {
+		success: true,
+		data: database,
+	}
+}

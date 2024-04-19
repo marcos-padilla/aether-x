@@ -18,11 +18,14 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { ExtendedProject } from '@/lib/types'
-import { ChevronDown, Eye, Trash2 } from 'lucide-react'
+import { ChevronDown, Edit, Eye, Trash2 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { deleteDatabase } from '@/controllers/database-controller'
 import { useRouter } from 'next/navigation'
+import { useModal } from '@/providers/modal-provider'
+import CustomModal from '@/components/modals/custom-modal'
+import CreateDatabaseForm from '@/components/forms/create-database-form'
 export default function DatabaseDropdownMenu({
 	project,
 }: {
@@ -30,6 +33,8 @@ export default function DatabaseDropdownMenu({
 }) {
 	const { toast } = useToast()
 	const router = useRouter()
+	const { setOpen } = useModal()
+
 	const handleDelete = async () => {
 		const res = await deleteDatabase(project.id, project.Database.id)
 		if (res.success) {
@@ -62,6 +67,23 @@ export default function DatabaseDropdownMenu({
 					<DropdownMenuItem className='flex items-center gap-x-1'>
 						<Eye size={16} />
 						View
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className='flex items-center gap-x-1'
+						onClick={() => {
+							setOpen(
+								<CustomModal>
+									<CreateDatabaseForm
+										projectId={project.id}
+										database={project.Database}
+										mode='edit'
+									/>
+								</CustomModal>
+							)
+						}}
+					>
+						<Edit size={16} />
+						Edit
 					</DropdownMenuItem>
 					<AlertDialogTrigger asChild>
 						<DropdownMenuItem className='flex items-center gap-x-1'>

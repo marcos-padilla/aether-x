@@ -13,15 +13,26 @@ import { DatabaseSchema } from '@/lib/types'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useModal } from '@/providers/modal-provider'
-import { createDatabase } from '@/controllers/database-controller'
+import {
+	createDatabase,
+	updateDatabase,
+} from '@/controllers/database-controller'
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { filterUndefiedValues } from '@/lib/utils'
+
+interface CreateDatabaseFormProps {
+	projectId: string
+	mode?: 'create' | 'edit'
+	database?: { name: string; id: string }
+}
 
 export default function CreateDatabaseForm({
 	projectId,
-}: {
-	projectId: string
-}) {
+	database,
+	mode = 'create',
+}: CreateDatabaseFormProps) {
 	const { setClose } = useModal()
 	const { toast } = useToast()
 	const router = useRouter()
@@ -34,26 +45,65 @@ export default function CreateDatabaseForm({
 		},
 	})
 
+	useEffect(() => {
+		if (database && mode === 'edit') {
+			form.reset(filterUndefiedValues(database) as DatabaseSchema)
+		}
+	}, [database, mode])
+
 	const handleSubmit = async (data: DatabaseSchema) => {
-		const res = await createDatabase(projectId, data)
-		if (res.success) {
-			setClose()
-			router.refresh()
-		} else {
-			toast({
-				title: 'Error while creating the database',
-				description: res.message,
-				variant: 'destructive',
-			})
+		if (mode === 'create') {
+			const res = await createDatabase(projectId, data)
+			if (res.success) {
+				setClose()
+				router.refresh()
+			} else {
+				toast({
+					title: 'Error while creating the database',
+					description: res.message,
+					variant: 'destructive',
+				})
+			}
+		} else if (mode === 'edit') {
+			if (database?.id) {
+				const res = await updateDatabase(
+					projectId,
+					database.id,
+					data
+				)
+				if (res?.success) {
+					toast({
+						title: 'Database Updated',
+						description: `The database ${data.name} has been updated successfully`,
+						variant: 'success',
+					})
+					setClose()
+					form.reset()
+					router.refresh()
+				} else {
+					toast({
+						title: 'Error',
+						description:
+							'An error occurred while updating the database',
+						variant: 'destructive',
+					})
+				}
+			}
 		}
 	}
 
 	return (
 		<Card className='border-none'>
 			<CardHeader>
-				<CardTitle>Create Database</CardTitle>
+				<CardTitle>
+					{mode === 'create'
+						? 'Create Database'
+						: 'Edit Database'}
+				</CardTitle>
 				<CardDescription>
-					Create a new database for this project
+					{mode === 'create'
+						? 'Create a new database for this project'
+						: 'Edit the database'}
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -89,7 +139,11 @@ export default function CreateDatabaseForm({
 							>
 								Cancel
 							</Button>
-							<Button>Create</Button>
+							<Button>
+								{mode === 'create'
+									? 'Create Database'
+									: 'Update Database'}
+							</Button>
 						</div>
 					</form>
 				</Form>
