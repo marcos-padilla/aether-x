@@ -30,7 +30,7 @@ export default async function ProjectsTab() {
 					Add Project
 				</NewProyectButton>
 			</div>
-			<div className='flex flex-wrap gap-4'>
+			<div className='flex flex-wrap gap-4 flex-col items-center md:flex-row'>
 				{projects?.map((project) => (
 					<div
 						key={project.id}
