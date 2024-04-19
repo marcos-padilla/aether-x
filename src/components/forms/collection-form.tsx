@@ -58,16 +58,14 @@ export default function CollectionForm({
 	const handleSubmit = async (data: CollectionSchema) => {
 		if (mode === 'create') {
 			const res = await createCollection(databaseId, data)
-			if (res?.success) {
-				setClose()
-				router.refresh()
-			} else {
+			if (res?.success === false) {
 				toast({
 					title: 'Error while creating the collection',
 					description: res?.message ?? 'An error occurred',
 					variant: 'destructive',
 				})
 			}
+			setClose()
 		} else if (mode === 'edit') {
 			if (collection?.id) {
 				const res = await updateCollection(
@@ -143,7 +141,9 @@ export default function CollectionForm({
 							>
 								Cancel
 							</Button>
-							<Button>
+							<Button
+								disabled={form.formState.isSubmitting}
+							>
 								{mode === 'create'
 									? 'Create Collection'
 									: 'Update Collection'}
