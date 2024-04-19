@@ -98,6 +98,9 @@ export const getProject = async (id: string) => {
 		where: {
 			id,
 		},
+		include: {
+			Platforms: true,
+		},
 	})
 
 	if (!project) {

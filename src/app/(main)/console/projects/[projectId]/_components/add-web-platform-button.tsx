@@ -5,7 +5,11 @@ import CustomModal from '@/components/modals/custom-modal'
 import { useModal } from '@/providers/modal-provider'
 import { Plus } from 'lucide-react'
 
-export default function AddWebPlatformButton() {
+export default function AddWebPlatformButton({
+	projectId,
+}: {
+	projectId: string
+}) {
 	const { setOpen } = useModal()
 
 	return (
@@ -14,7 +18,7 @@ export default function AddWebPlatformButton() {
 			onClick={() => {
 				setOpen(
 					<CustomModal>
-						<AddPlatformForm />
+						<AddPlatformForm projectId={projectId} />
 					</CustomModal>
 				)
 			}}

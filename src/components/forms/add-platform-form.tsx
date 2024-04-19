@@ -23,12 +23,16 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useModal } from '@/providers/modal-provider'
 import { useToast } from '../ui/use-toast'
+import { useEffect } from 'react'
+import { createPlatform } from '@/controllers/platform-controller'
+import { useRouter } from 'next/navigation'
 
 const defaultHostnames = ['*.vercel.app', '*.netlify.app']
 
-export default function AddPlatformForm() {
+export default function AddPlatformForm({ projectId }: { projectId: string }) {
 	const { setClose } = useModal()
 	const { toast } = useToast()
+	const router = useRouter()
 
 	const form = useForm({
 		mode: 'onChange',
@@ -39,7 +43,24 @@ export default function AddPlatformForm() {
 		},
 	})
 
-	const handleSubmit = async (data: PlatformSchema) => {}
+	const handleSubmit = async (data: PlatformSchema) => {
+		const res = await createPlatform(projectId, data)
+		if (res?.success) {
+			toast({
+				title: 'Success',
+				description: 'Platform created successfully',
+				variant: 'success',
+			})
+			setClose()
+			router.refresh()
+		} else {
+			toast({
+				title: 'Error',
+				description: res?.message,
+				variant: 'destructive',
+			})
+		}
+	}
 
 	return (
 		<Card className='border-none'>
