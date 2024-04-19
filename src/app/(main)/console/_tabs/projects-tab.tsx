@@ -13,6 +13,7 @@ import {
 	View,
 } from 'lucide-react'
 import ProjectDropdownMenu from '../_components/project-dropdown-menu'
+import Link from 'next/link'
 
 export default async function ProjectsTab() {
 	const projects = await getProjects()
@@ -27,15 +28,16 @@ export default async function ProjectsTab() {
 			</div>
 			<div className='flex flex-wrap gap-4 flex-col items-center md:flex-row'>
 				{projects?.map((project) => (
-					<div
+					<Link
 						key={project.id}
 						className='bg-accent hover:bg-accent/80 transition-all duration-200 rounded-md p-4 w-96 aspect-video flex flex-col gap-2'
+						href={`/console/projects/${project.id}`}
 					>
 						<div className='flex items-center justify-between'>
 							<h3>{project.name}</h3>
 							<ProjectDropdownMenu project={project} />
 						</div>
-					</div>
+					</Link>
 				))}
 				<NewProyectButton className='bg-accent hover:bg-accent/80 transition-all duration-200 rounded-md p-4 w-96 aspect-video flex items-center justify-center flex-col gap-2'>
 					<PlusCircle size={40} strokeWidth={1} />

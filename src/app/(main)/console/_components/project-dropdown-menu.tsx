@@ -28,63 +28,63 @@ export default function ProjectDropdownMenu({ project }: { project: Project }) {
 	const handleDelete = () => {}
 
 	return (
-		<AlertDialog>
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<Button size={'icon'} variant={'ghost'}>
-						<MoreVertical />
-					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent>
-					<DropdownMenuItem className='flex gap-x-1'>
-						<Eye size={15} />
-						View
-					</DropdownMenuItem>
-					<DropdownMenuItem
-						className='flex gap-x-1'
-						onClick={() => {
-							console.log('View project')
-
-							setOpen(
-								<CustomModal>
-									<ProjectForm
-										mode='edit'
-										project={project}
-									/>
-								</CustomModal>
-							)
-						}}
-					>
-						<Edit size={15} />
-						Edit
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<AlertDialogTrigger asChild>
-						<DropdownMenuItem className='text-destructive hover:!text-destructive flex gap-x-1'>
-							<Trash2 size={15} />
-							Delete
+		<div onClick={(e) => e.stopPropagation()}>
+			<AlertDialog>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button size={'icon'} variant={'ghost'}>
+							<MoreVertical />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent>
+						<DropdownMenuItem className='flex gap-x-1'>
+							<Eye size={15} />
+							View
 						</DropdownMenuItem>
-					</AlertDialogTrigger>
-				</DropdownMenuContent>
-			</DropdownMenu>
-			<AlertDialogContent>
-				<AlertDialogTitle>Delete Project</AlertDialogTitle>
-				<AlertDialogDescription>
-					Are you sure you want to delete this project? This
-					action cannot be undone.
-				</AlertDialogDescription>
-				<AlertDialogCancel>Cancel</AlertDialogCancel>
-				<AlertDialogAction
-					className={cn(
-						buttonVariants({
-							variant: 'destructive',
-						})
-					)}
-					onClick={handleDelete}
-				>
-					Delete
-				</AlertDialogAction>
-			</AlertDialogContent>
-		</AlertDialog>
+						<DropdownMenuItem
+							className='flex gap-x-1'
+							onClick={() => {
+								setOpen(
+									<CustomModal>
+										<ProjectForm
+											mode='edit'
+											project={project}
+										/>
+									</CustomModal>
+								)
+							}}
+						>
+							<Edit size={15} />
+							Edit
+						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<AlertDialogTrigger asChild>
+							<DropdownMenuItem className='text-destructive hover:!text-destructive flex gap-x-1'>
+								<Trash2 size={15} />
+								Delete
+							</DropdownMenuItem>
+						</AlertDialogTrigger>
+					</DropdownMenuContent>
+				</DropdownMenu>
+				<AlertDialogContent>
+					<AlertDialogTitle>Delete Project</AlertDialogTitle>
+					<AlertDialogDescription>
+						Are you sure you want to delete this project? This
+						action cannot be undone.
+					</AlertDialogDescription>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction
+						className={cn(
+							buttonVariants({
+								variant: 'destructive',
+							})
+						)}
+						onClick={handleDelete}
+					>
+						Delete
+					</AlertDialogAction>
+				</AlertDialogContent>
+			</AlertDialog>
+		</div>
 	)
 }
