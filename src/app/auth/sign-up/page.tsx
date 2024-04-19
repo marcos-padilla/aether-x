@@ -28,6 +28,7 @@ import { useEffect, useState } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import { signIn } from 'next-auth/react'
 import { signUp } from '@/controllers/auth-controller'
+import Link from 'next/link'
 
 const passwordValidations = [
 	{
@@ -258,6 +259,16 @@ export default function SignUpPage() {
 						</button>
 					</form>
 				</Form>
+				<div className='bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full' />
+				<p className='text-center'>
+					Already have an account?{' '}
+					<Link
+						href='/auth/sign-in'
+						className='text-blue-500 hover:underline font-bold'
+					>
+						Sign In
+					</Link>
+				</p>
 			</CardContent>
 		</Card>
 	)

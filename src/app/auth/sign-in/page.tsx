@@ -23,6 +23,7 @@ import { useForm } from 'react-hook-form'
 import BottomGradient from '../_components/bottom-gradient'
 import { CustomInput } from '../_components/custom-input'
 import LabelInputContainer from '../_components/label-input-container'
+import Link from 'next/link'
 
 export default function SignInPage() {
 	const form = useForm({
@@ -101,6 +102,16 @@ export default function SignInPage() {
 						</button>
 					</form>
 				</Form>
+				<div className='bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full' />
+				<p className='text-center'>
+					{`Don't have an account yet? `}
+					<Link
+						href='/auth/sign-up'
+						className='text-blue-500 hover:underline font-bold'
+					>
+						Sign Up
+					</Link>
+				</p>
 			</CardContent>
 		</Card>
 	)
