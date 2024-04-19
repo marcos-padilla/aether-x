@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import {
+	collectionSchema,
 	databaseSchema,
 	platformSchema,
 	projectSchema,
@@ -17,6 +18,7 @@ export type SignInSchema = z.infer<typeof signInSchema>
 export type ProjectSchema = z.infer<typeof projectSchema>
 export type PlatformSchema = z.infer<typeof platformSchema>
 export type DatabaseSchema = z.infer<typeof databaseSchema>
+export type CollectionSchema = z.infer<typeof collectionSchema>
 
 //Next auth
 export type ExtendedSession = Session & {
@@ -30,7 +32,7 @@ export type ExtendedUser = User & {
 
 export type ExtendedProject = Project & {
 	Platforms: Platform[]
-	Database: Database
+	Database: Database | null
 }
 
 export type CustomServerResponse<T> =

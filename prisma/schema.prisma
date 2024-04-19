@@ -97,8 +97,18 @@ model Platform {
 }
 
 model Database {
-  id        String  @id @default(uuid())
-  name      String
-  Project   Project @relation(fields: [projectId], references: [id])
-  projectId String  @unique
+  id          String       @id @default(uuid())
+  name        String
+  Project     Project      @relation(fields: [projectId], references: [id])
+  projectId   String       @unique
+  Collections Collection[]
+}
+
+model Collection {
+  id         String   @id @default(uuid())
+  name       String
+  Database   Database @relation(fields: [databaseId], references: [id])
+  databaseId String
+
+  @@unique([name, databaseId])
 }

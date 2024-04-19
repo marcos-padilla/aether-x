@@ -50,3 +50,15 @@ export const databaseSchema = z.object({
 			message: 'Database name must be alphanumeric',
 		}),
 })
+
+export const collectionSchema = z.object({
+	name: z
+		.string()
+		.min(1, { message: 'Collection name is required' })
+		.refine((data) => data.length <= 30, {
+			message: 'Collection name must be less than 30 characters',
+		})
+		.refine((data) => /^[a-zA-Z0-9_]*$/.test(data), {
+			message: 'Collection name must be alphanumeric',
+		}),
+})

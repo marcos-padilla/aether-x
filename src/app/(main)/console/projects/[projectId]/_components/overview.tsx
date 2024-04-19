@@ -20,6 +20,7 @@ import { Box, ChevronDown, Database, Eye, Plus, Trash2 } from 'lucide-react'
 import CreateDatabaseButton from './create-database-button'
 
 import DatabaseDropdownMenu from './database-dropdown-menu'
+import CreateCollectionButton from './create-collection-button'
 
 export default function Overview({ project }: { project: ExtendedProject }) {
 	return (
@@ -130,14 +131,9 @@ export default function Overview({ project }: { project: ExtendedProject }) {
 										Collections
 									</span>
 								</div>
-								<Button
-									size={'sm'}
-									variant={'outline'}
-									className='gap-x-1'
-								>
-									<Plus />
-									Create Collection
-								</Button>
+								<CreateCollectionButton
+									databaseId={project.Database.id}
+								/>
 							</div>
 						) : (
 							<div className='flex justify-end'>
