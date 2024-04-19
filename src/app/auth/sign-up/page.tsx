@@ -182,40 +182,48 @@ export default function SignUpPage() {
 									</LabelInputContainer>
 									<FormMessage />
 									<FormDescription>
-										{passwordValidations.map(
-											(validation, index) => (
-												<div key={index}>
-													<span
-														className={`flex items-center gap-x-2 ${
-															passwordValidationsValues[
-																index
-															]
-																? 'text-green-500'
-																: 'text-red-500'
-														}`}
-													>
-														{passwordValidationsValues[
+										{field.value &&
+											passwordValidations.map(
+												(
+													validation,
+													index
+												) => (
+													<div
+														key={
 															index
-														] ? (
-															<CheckCircle
-																size={
-																	15
-																}
-															/>
-														) : (
-															<XCircle
-																size={
-																	15
-																}
-															/>
-														)}
-														{
-															validation.title
 														}
-													</span>
-												</div>
-											)
-										)}
+													>
+														<span
+															className={`flex items-center gap-x-2 ${
+																passwordValidationsValues[
+																	index
+																]
+																	? 'text-green-500'
+																	: 'text-red-500'
+															}`}
+														>
+															{passwordValidationsValues[
+																index
+															] ? (
+																<CheckCircle
+																	size={
+																		15
+																	}
+																/>
+															) : (
+																<XCircle
+																	size={
+																		15
+																	}
+																/>
+															)}
+															{
+																validation.title
+															}
+														</span>
+													</div>
+												)
+											)}
 									</FormDescription>
 								</FormItem>
 							)}
