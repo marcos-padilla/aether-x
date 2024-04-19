@@ -16,7 +16,7 @@ interface SidebarLinkProps {
 	icon: LucideIcon
 	label: string
 	href: string
-	onRedirect: () => void
+	onRedirect?: () => void
 }
 
 const SidebarLink = ({
@@ -29,7 +29,9 @@ const SidebarLink = ({
 		<Link
 			href={href}
 			className='flex items-center justify-between text-muted-foreground hover:text-foreground transition-all duration-200 rounded-md hover:bg-accent px-2 py-1 group'
-			onClick={onRedirect}
+			onClick={() => {
+				if (onRedirect) onRedirect()
+			}}
 		>
 			<div className='flex items-center gap-x-2'>
 				<Icon size={20} />
@@ -46,7 +48,7 @@ const SidebarLink = ({
 export default function ProjectSidebar({
 	onRedirect,
 }: {
-	onRedirect: () => void
+	onRedirect?: () => void
 }) {
 	const { projectId } = useParams()
 	return (
