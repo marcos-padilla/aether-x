@@ -1,12 +1,6 @@
 import NewProyectButton from '@/components/buttons/new-proyect-button'
 import { Button, buttonVariants } from '@/components/ui/button'
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+
 import { Skeleton } from '@/components/ui/skeleton'
 import { getProjects } from '@/controllers/project-controller'
 import {
@@ -18,6 +12,7 @@ import {
 	Trash2,
 	View,
 } from 'lucide-react'
+import ProjectDropdownMenu from '../_components/project-dropdown-menu'
 
 export default async function ProjectsTab() {
 	const projects = await getProjects()
@@ -38,31 +33,7 @@ export default async function ProjectsTab() {
 					>
 						<div className='flex items-center justify-between'>
 							<h3>{project.name}</h3>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button
-										size={'icon'}
-										variant={'ghost'}
-									>
-										<MoreVertical />
-									</Button>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent>
-									<DropdownMenuItem className='flex gap-x-1'>
-										<Eye size={15} />
-										View
-									</DropdownMenuItem>
-									<DropdownMenuItem className='flex gap-x-1'>
-										<Edit size={15} />
-										Edit
-									</DropdownMenuItem>
-									<DropdownMenuSeparator />
-									<DropdownMenuItem className='text-destructive hover:!text-destructive flex gap-x-1'>
-										<Trash2 size={15} />
-										Delete
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
+							<ProjectDropdownMenu project={project} />
 						</div>
 					</div>
 				))}
