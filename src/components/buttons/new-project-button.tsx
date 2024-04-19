@@ -4,7 +4,7 @@ import { useModal } from '@/providers/modal-provider'
 import CustomModal from '../modals/custom-modal'
 import ProjectForm from '../forms/project-form'
 
-export default function NewProyectButton({
+export default function NewProjectButton({
 	children,
 	className,
 }: {

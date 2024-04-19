@@ -1,4 +1,4 @@
-import NewProyectButton from '@/components/buttons/new-proyect-button'
+import NewProjectButton from '@/components/buttons/new-project-button'
 import { Button, buttonVariants } from '@/components/ui/button'
 
 import { Skeleton } from '@/components/ui/skeleton'
@@ -21,10 +21,10 @@ export default async function ProjectsTab() {
 		<div className='container flex flex-col gap-y-5'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-lg'>Projects</h2>
-				<NewProyectButton className={buttonVariants()}>
+				<NewProjectButton className={buttonVariants()}>
 					<Plus />
 					Add Project
-				</NewProyectButton>
+				</NewProjectButton>
 			</div>
 			<div className='flex flex-wrap gap-4 flex-col items-center md:flex-row'>
 				{projects?.map((project) => (
@@ -39,10 +39,10 @@ export default async function ProjectsTab() {
 						</div>
 					</Link>
 				))}
-				<NewProyectButton className='bg-accent hover:bg-accent/80 transition-all duration-200 rounded-md p-4 w-96 aspect-video flex items-center justify-center flex-col gap-2'>
+				<NewProjectButton className='bg-accent hover:bg-accent/80 transition-all duration-200 rounded-md p-4 w-96 aspect-video flex items-center justify-center flex-col gap-2'>
 					<PlusCircle size={40} strokeWidth={1} />
 					<span className=''>Add new project</span>
-				</NewProyectButton>
+				</NewProjectButton>
 			</div>
 		</div>
 	)
