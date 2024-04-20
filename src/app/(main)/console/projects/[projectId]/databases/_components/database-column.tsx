@@ -29,7 +29,15 @@ import { ExtendedDatabase } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { ArrowUpDown, Edit, MoreHorizontal, Trash2 } from 'lucide-react'
+import {
+	ArrowUpDown,
+	Edit,
+	Eye,
+	MoreHorizontal,
+	Trash2,
+	View,
+} from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
@@ -157,6 +165,15 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 			const rowData = row.original
 			return (
 				<div className='flex items-center gap-x-1'>
+					<Link
+						href={`/console/projects/${rowData.projectId}/databases/${rowData.id}`}
+						className={buttonVariants({
+							variant: 'ghost',
+							size: 'icon',
+						})}
+					>
+						<Eye size={18} />
+					</Link>
 					<CellActions rowData={rowData} />
 				</div>
 			)
