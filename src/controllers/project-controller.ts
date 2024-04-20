@@ -28,6 +28,13 @@ export const createProject = async (
 		}
 	}
 
+	if (!(await canCreateProject())) {
+		return {
+			success: false,
+			message: 'You have reached the limit of projects for your plan',
+		}
+	}
+
 	const project = await db.project.create({
 		data: {
 			...data,
@@ -153,4 +160,20 @@ export const deleteProject = async (id: string) => {
 	return {
 		success: true,
 	}
+}
+
+export const canCreateProject = async () => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return false
+	}
+	const projects = await db.project.findMany({
+		where: {
+			userId: user.id,
+		},
+	})
+	const cantProjects = user.Plan.Features.find(
+		(feat) => feat.name === 'PROJECT_COUNT'
+	)?.value
+	return projects.length < (cantProjects || 0)
 }

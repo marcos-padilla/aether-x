@@ -21,6 +21,11 @@ export const getCurrentUser = async ({
 		},
 		include: {
 			accounts: true,
+			Plan: {
+				include: {
+					Features: true,
+				},
+			},
 		},
 	})) as ExtendedUser
 

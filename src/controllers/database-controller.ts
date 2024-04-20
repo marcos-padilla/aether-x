@@ -42,6 +42,13 @@ export const createDatabase = async (
 		}
 	}
 
+	if (!(await canCreateDatabase(projectId))) {
+		return {
+			success: false,
+			message: 'You have reached the limit of databases in this project for your plan',
+		}
+	}
+
 	const database = await db.database.create({
 		data: {
 			...data,
@@ -196,4 +203,24 @@ export const deleteDatabases = async (ids: string[]) => {
 	return {
 		success: true,
 	}
+}
+
+export const canCreateDatabase = async (projectId: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return false
+	}
+	const databases = await db.database.findMany({
+		where: {
+			Project: {
+				userId: user.id,
+				id: projectId,
+			},
+		},
+	})
+	const cantDatabases = user.Plan.Features.find(
+		(feat) => feat.name === 'DATABASE_PER_PROJECT_COUNT'
+	)?.value
+
+	return databases.length < (cantDatabases || 0)
 }

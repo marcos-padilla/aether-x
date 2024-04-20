@@ -1,14 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
-import ProjectsTab from './_tabs/projects-tab'
 import { Suspense } from 'react'
+import ProjectsTab from './_tabs/projects-tab'
 export default function ConsolePage() {
 	return (
 		<main>

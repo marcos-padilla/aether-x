@@ -6,7 +6,6 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 
-import { Button } from '@/components/ui/button'
 import {
 	Select,
 	SelectContent,
@@ -16,13 +15,17 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { ExtendedProject } from '@/lib/types'
-import { Box, ChevronDown, Database, Eye, Plus, Trash2 } from 'lucide-react'
+import { Box, Database } from 'lucide-react'
 import CreateDatabaseButton from './create-database-button'
-
-import DatabaseDropdownMenu from './database-dropdown-menu'
 import CreateCollectionButton from './create-collection-button'
+import { canCreateDatabase } from '@/controllers/database-controller'
 
-export default function Overview({ project }: { project: ExtendedProject }) {
+export default async function Overview({
+	project,
+}: {
+	project: ExtendedProject
+}) {
+	const _canCreateDatabase = canCreateDatabase(project.id)
 	return (
 		<div className='flex flex-col gap-4'>
 			<div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
@@ -147,6 +150,7 @@ export default function Overview({ project }: { project: ExtendedProject }) {
 							<div className='flex justify-end'>
 								<CreateDatabaseButton
 									projectId={project.id}
+									disabled={!_canCreateDatabase}
 								/>
 							</div>
 						)}

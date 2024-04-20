@@ -14,6 +14,12 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+enum FeatureType {
+  PROJECT_COUNT
+  DATABASE_PER_PROJECT_COUNT
+  COLLECTION_PER_DATABASE_COUNT
+}
+
 model Account {
   id                String  @id @default(uuid())
   userId            String
@@ -64,6 +70,8 @@ model User {
   otpEnabled       Boolean           @default(false)
   verificationCode VerificationCode?
   Projects         Project[]
+  Plan             Plan              @relation(fields: [planId], references: [id])
+  planId           String
 }
 
 model VerificationCode {
@@ -77,6 +85,27 @@ model VerificationCode {
 
   @@unique([userId])
   @@index([userId])
+}
+
+model Plan {
+  id String @id @default(uuid())
+
+  name      String
+  price     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Users     User[]
+  Features  Feature[]
+}
+
+model Feature {
+  id        String      @id @default(uuid())
+  name      FeatureType
+  value     Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Plan      Plan        @relation(fields: [planId], references: [id])
+  planId    String
 }
 
 model Project {

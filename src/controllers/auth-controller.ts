@@ -27,12 +27,27 @@ export const signUp = async (data: SignUpSchema) => {
 	}
 
 	const hashedPassword = bcrypt.hashSync(data.password, 12)
-	const user = await db.user.create({
+	const freePlan = await db.plan.findFirst({
+		select: {
+			id: true,
+		},
+		where: {
+			name: 'Free',
+		},
+	})
+	console.log(freePlan)
+
+	await db.user.create({
 		data: {
 			email: data.email,
 			firstName: data.firstName,
 			lastName: data.lastName,
 			hashedPassword,
+			Plan: {
+				connect: {
+					id: freePlan?.id,
+				},
+			},
 		},
 	})
 

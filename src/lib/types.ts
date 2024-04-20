@@ -12,6 +12,8 @@ import {
 	Account,
 	Collection,
 	Database,
+	Feature,
+	Plan,
 	Platform,
 	Project,
 	User,
@@ -36,6 +38,11 @@ export type ExtendedSession = Session & {
 // Prisma Extended Types
 export type ExtendedUser = User & {
 	accounts: Account[]
+	Plan: ExtendedPlan
+}
+
+export type ExtendedPlan = Plan & {
+	Features: Feature[]
 }
 
 export type ExtendedDatabase = Database & {

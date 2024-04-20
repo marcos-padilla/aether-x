@@ -7,12 +7,15 @@ import { useModal } from '@/providers/modal-provider'
 
 export default function CreateDatabaseButton({
 	projectId,
+	disabled,
 }: {
 	projectId: string
+	disabled?: boolean
 }) {
 	const { setOpen } = useModal()
 	return (
 		<Button
+			disabled={disabled}
 			onClick={() => {
 				setOpen(
 					<CustomModal>
