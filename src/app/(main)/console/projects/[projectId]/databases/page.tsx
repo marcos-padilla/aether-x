@@ -28,7 +28,6 @@ export default async function DatabasePage({
 							<CardDescription className='rounded-full bg-accent px-3 py-1 hover:bg-accent/50 transition-all hover:text-foreground cursor-pointer'>
 								{databases.length}/1 created
 							</CardDescription>
-							1
 						</ActionTooltip>
 					</div>
 					<CreateDatabaseButton projectId={params.projectId} />
