@@ -1,3 +1,5 @@
+import ActionTooltip from '@/components/globals/action-tooltip'
+import DataTable from '@/components/globals/data-table'
 import {
 	Card,
 	CardDescription,
@@ -6,8 +8,8 @@ import {
 } from '@/components/ui/card'
 import { getDatabases } from '@/controllers/database-controller'
 import CreateDatabaseButton from '../_components/create-database-button'
-import CreateDatabaseForm from '@/components/forms/create-database-form'
-import ActionTooltip from '@/components/globals/action-tooltip'
+import { DatabaseActions } from './_components/database-action'
+import { DatabaseColumns } from './_components/database-column'
 
 export default async function DatabasePage({
 	params,
@@ -16,9 +18,6 @@ export default async function DatabasePage({
 }) {
 	const databases = await getDatabases(params.projectId)
 
-	if (databases.length === 0) {
-		return <CreateDatabaseButton projectId={params.projectId} />
-	}
 	return (
 		<div className='container pt-5'>
 			<Card>
@@ -29,11 +28,18 @@ export default async function DatabasePage({
 							<CardDescription className='rounded-full bg-accent px-3 py-1 hover:bg-accent/50 transition-all hover:text-foreground cursor-pointer'>
 								{databases.length}/1 created
 							</CardDescription>
+							1
 						</ActionTooltip>
 					</div>
 					<CreateDatabaseButton projectId={params.projectId} />
 				</CardHeader>
-				<CardDescription></CardDescription>
+				<CardDescription>
+					<DataTable
+						columns={DatabaseColumns}
+						data={databases}
+						actions={DatabaseActions}
+					/>
+				</CardDescription>
 			</Card>
 		</div>
 	)

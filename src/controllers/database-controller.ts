@@ -168,7 +168,32 @@ export const getDatabases = async (projectId: string) => {
 			Collections: true,
 			Project: true,
 		},
+		orderBy: {
+			createdAt: 'desc',
+		},
 	})
 
 	return database
+}
+
+export const deleteDatabases = async (ids: string[]) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return redirect('/auth/sign-in')
+	}
+
+	await db.database.deleteMany({
+		where: {
+			id: {
+				in: ids,
+			},
+			Project: {
+				userId: user.id,
+			},
+		},
+	})
+
+	return {
+		success: true,
+	}
 }

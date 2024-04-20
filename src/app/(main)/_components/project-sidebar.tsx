@@ -66,9 +66,9 @@ export default function ProjectSidebar({
 				onRedirect={onRedirect}
 			/>
 			<SidebarLink
-				href={`/console/projects/${projectId}/database`}
+				href={`/console/projects/${projectId}/databases`}
 				icon={Database}
-				label='Database'
+				label='Databases'
 				onRedirect={onRedirect}
 			/>
 			<SidebarLink
