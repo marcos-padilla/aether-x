@@ -15,17 +15,22 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { ExtendedProject } from '@/lib/types'
-import { Box, Database } from 'lucide-react'
+import { Box, ChevronDown, Database } from 'lucide-react'
 import CreateDatabaseButton from './create-database-button'
 import CreateCollectionButton from './create-collection-button'
-import { canCreateDatabase } from '@/controllers/database-controller'
+import {
+	canCreateDatabase,
+	getDatabases,
+} from '@/controllers/database-controller'
 
 export default async function Overview({
 	project,
 }: {
 	project: ExtendedProject
 }) {
-	const _canCreateDatabase = canCreateDatabase(project.id)
+	const _canCreateDatabase = await canCreateDatabase(project.id)
+	const databases = await getDatabases(project.id)
+
 	return (
 		<div className='flex flex-col gap-4'>
 			<div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
@@ -117,11 +122,19 @@ export default async function Overview({
 					<CardHeader className='flex flex-row justify-between gap-x-2'>
 						<CardTitle className='flex items-center gap-x-2 text-sm '>
 							<Database />
-							Databases
+							{databases.length > 0 ? (
+								<div>
+									{databases.length}{' '}
+									{databases.length > 1
+										? 'Databases'
+										: 'Database'}
+								</div>
+							) : (
+								<div>
+									No databases in this project yet
+								</div>
+							)}
 						</CardTitle>
-						{/* 	{project.Database && (
-							<DatabaseDropdownMenu project={project} />
-						)} */}
 					</CardHeader>
 					<CardContent className='flex flex-col'>
 						{project.Databases.length > 0 ? (
