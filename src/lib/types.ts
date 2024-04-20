@@ -16,6 +16,7 @@ import {
 	Project,
 	User,
 } from '@prisma/client'
+import { LucideIcon } from 'lucide-react'
 
 export type TODO = any
 
@@ -54,3 +55,34 @@ export type CustomServerResponse<T> =
 	  }
 	| null
 	| undefined
+
+// TABLE
+
+export type ColumnField = {
+	accessorKey: string
+	headerName?: string
+	sortable?: boolean
+	cellClassName?: string
+}
+
+export type GenerateColumnsProps = {
+	fields: ColumnField[]
+	includeId?: boolean
+	includeSelect?: boolean
+}
+
+type TableActionTrigger = {
+	label: string
+	icon?: LucideIcon
+	variant?: 'default' | 'destructive'
+}
+
+export type TableAction<TData> = {
+	trigger: TableActionTrigger
+	disabled?: boolean | ((data: TData[]) => boolean)
+	Modal: React.FC<{ data: TData[] }>
+	meta?: {
+		modalTitle?: string
+		modalSubheading?: string
+	}
+}
