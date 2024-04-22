@@ -10,6 +10,7 @@ import {
 import { Session } from 'next-auth'
 import {
 	Account,
+	Attribute,
 	Collection,
 	Database,
 	Feature,
@@ -19,6 +20,7 @@ import {
 	User,
 } from '@prisma/client'
 import { LucideIcon } from 'lucide-react'
+import { Attributes } from 'react'
 
 export type TODO = any
 
@@ -52,6 +54,11 @@ export type ExtendedDatabase = Database & {
 export type ExtendedProject = Project & {
 	Platforms: Platform[]
 	Databases: ExtendedDatabase[]
+}
+
+export type ExtendedCollection = Collection & {
+	Attributes: Attribute[]
+	Database: Database
 }
 
 export type CustomServerResponse<T> =

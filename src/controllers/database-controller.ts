@@ -224,3 +224,29 @@ export const canCreateDatabase = async (projectId: string) => {
 
 	return databases.length < (cantDatabases || 0)
 }
+
+export const getDatabase = async (databaseId: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return redirect('/auth/sign-in')
+	}
+
+	const database = await db.database.findFirst({
+		where: {
+			id: databaseId,
+			Project: {
+				userId: user.id,
+			},
+		},
+		include: {
+			Collections: true,
+			Project: true,
+		},
+	})
+
+	if (!database) {
+		return redirect('/404')
+	}
+
+	return database
+}

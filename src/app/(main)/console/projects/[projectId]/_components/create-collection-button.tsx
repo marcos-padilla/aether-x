@@ -8,15 +8,17 @@ import { Plus } from 'lucide-react'
 
 export default function CreateCollectionButton({
 	databaseId,
+	disabled,
 }: {
 	databaseId: string
+	disabled: boolean
 }) {
 	const { setOpen } = useModal()
 	return (
 		<Button
 			size={'sm'}
-			variant={'outline'}
 			className='gap-x-1'
+			disabled={disabled}
 			onClick={() => {
 				setOpen(
 					<CustomModal>

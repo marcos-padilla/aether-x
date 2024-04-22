@@ -14,14 +14,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
-import { ExtendedProject } from '@/lib/types'
-import { Box, ChevronDown, Database } from 'lucide-react'
-import CreateDatabaseButton from './create-database-button'
-import CreateCollectionButton from './create-collection-button'
 import {
 	canCreateDatabase,
 	getDatabases,
 } from '@/controllers/database-controller'
+import { ExtendedProject } from '@/lib/types'
+import { Box, Database } from 'lucide-react'
+import CreateCollectionButton from './create-collection-button'
+import CreateDatabaseButton from './create-database-button'
 
 export default async function Overview({
 	project,
@@ -153,10 +153,9 @@ export default async function Overview({
 										Total Collections
 									</span>
 								</div>
-								<CreateCollectionButton
-									databaseId={
-										project.Databases[0].id
-									}
+								<CreateDatabaseButton
+									projectId={project.id}
+									disabled={!_canCreateDatabase}
 								/>
 							</div>
 						) : (

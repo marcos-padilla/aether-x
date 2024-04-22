@@ -1,7 +1,7 @@
 import { getProject } from '@/controllers/project-controller'
 import { redirect } from 'next/navigation'
 import GetStarted from './_components/get-started'
-import ProjectIdSpan from './_components/project-id-span'
+import IdSpan from '@/components/globals/id-span'
 import Overview from './_components/overview'
 
 export default async function ProjectIdPage({
@@ -19,7 +19,7 @@ export default async function ProjectIdPage({
 				<div className='container'>
 					<div className='flex items-center gap-x-2'>
 						<h1 className='text-xl'>{project.name}</h1>
-						<ProjectIdSpan id={project.id} />
+						<IdSpan id={project.id} />
 					</div>
 				</div>
 			</div>

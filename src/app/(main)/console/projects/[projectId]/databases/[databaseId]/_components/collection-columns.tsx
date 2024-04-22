@@ -1,0 +1,274 @@
+'use client'
+
+import CollectionForm from '@/components/forms/collection-form'
+import CreateDatabaseForm from '@/components/forms/create-database-form'
+import CustomModal from '@/components/modals/custom-modal'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useToast } from '@/components/ui/use-toast'
+import { deleteCollection } from '@/controllers/collection-controller'
+import { deleteDatabase } from '@/controllers/database-controller'
+import { ExtendedCollection, ExtendedDatabase } from '@/lib/types'
+import { useModal } from '@/providers/modal-provider'
+import { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
+import {
+	ArrowUpDown,
+	Edit,
+	Eye,
+	MoreHorizontal,
+	Trash2,
+	View,
+} from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+export const CollectionColumns: ColumnDef<ExtendedCollection>[] = [
+	{
+		id: 'select',
+		header: ({ table }) => (
+			<Checkbox
+				checked={
+					table.getIsAllPageRowsSelected() ||
+					(table.getIsSomePageRowsSelected() && 'indeterminate')
+				}
+				onCheckedChange={(value) =>
+					table.toggleAllPageRowsSelected(!!value)
+				}
+				aria-label='Select all'
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label='Select row'
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		accessorKey: 'name',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Name
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const name = row.getValue('name') as string
+			return <div>{name}</div>
+		},
+	},
+	{
+		accessorKey: 'Attributes',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Attributes
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const attributes = row.getValue('Attributes') as string[]
+			return <div>{attributes.length}</div>
+		},
+	},
+	{
+		accessorKey: 'createdAt',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Created At
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const date = format(
+				row.getValue('createdAt') as Date,
+				'MMM d, yyy - h:mm a'
+			)
+			return <span className='whitespace-nowrap'>{date}</span>
+		},
+	},
+	{
+		accessorKey: 'updatedAt',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Updated At
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const date = format(
+				row.getValue('createdAt') as Date,
+				'MMM d, yyy - h:mm a'
+			)
+			return <span className='whitespace-nowrap'>{date}</span>
+		},
+	},
+	{
+		id: 'actions',
+		cell: ({ row }) => {
+			const rowData = row.original
+			return (
+				<div className='flex items-center gap-x-1'>
+					<Link
+						href={`/console/projects/${rowData.Database.projectId}/databases/${rowData.Database.id}/collections/${rowData.id}`}
+						className={buttonVariants({
+							variant: 'ghost',
+							size: 'icon',
+						})}
+					>
+						<Eye size={18} />
+					</Link>
+					<CellActions rowData={rowData} />
+				</div>
+			)
+		},
+	},
+]
+
+interface CellActionsProps {
+	rowData: ExtendedCollection
+}
+
+function CellActions({ rowData }: CellActionsProps) {
+	const { setOpen } = useModal()
+	const { toast } = useToast()
+	const router = useRouter()
+	const handleDelete = async () => {
+		const res = await deleteCollection(rowData.id)
+		if (res.success) {
+			toast({
+				title: 'Collection deleted',
+				variant: 'success',
+			})
+		} else {
+			toast({
+				title: 'Collection could not be deleted',
+				description: res.message,
+				variant: 'destructive',
+			})
+		}
+		router.refresh()
+	}
+
+	return (
+		<AlertDialog>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button variant='ghost' className='h-8 w-8 p-0'>
+						<span className='sr-only'>Open menu</span>
+						<MoreHorizontal className='h-4 w-4' />
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align='end'>
+					<DropdownMenuLabel>Actions</DropdownMenuLabel>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem
+						className='flex items-center gap-x-2'
+						onClick={() => {
+							setOpen(
+								<CustomModal>
+									<CollectionForm
+										databaseId={
+											rowData.Database.id
+										}
+										mode='edit'
+										collection={rowData}
+									/>
+								</CustomModal>
+							)
+						}}
+					>
+						<Edit size={18} />
+						Edit
+					</DropdownMenuItem>
+					<AlertDialogTrigger asChild>
+						<DropdownMenuItem className='flex items-center gap-x-2 text-destructive'>
+							<Trash2 size={18} />
+							Delete
+						</DropdownMenuItem>
+					</AlertDialogTrigger>
+				</DropdownMenuContent>
+			</DropdownMenu>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Delete Database</AlertDialogTitle>
+					<AlertDialogDescription>
+						Are you sure you want to delete this collection?
+						This action cannot be undone and all the data will
+						be lost
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+
+				<AlertDialogFooter>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction
+						className={buttonVariants({
+							variant: 'destructive',
+						})}
+						onClick={handleDelete}
+					>
+						Delete
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+	)
+}
