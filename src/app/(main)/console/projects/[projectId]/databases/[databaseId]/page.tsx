@@ -2,6 +2,7 @@ import ActionTooltip from '@/components/globals/action-tooltip'
 import DataTable from '@/components/globals/data-table'
 import {
 	Card,
+	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
@@ -42,13 +43,13 @@ export default async function DatabasePage({
 						disabled={!canCreateCollection}
 					/>
 				</CardHeader>
-				<CardDescription>
+				<CardContent>
 					<DataTable
 						columns={CollectionColumns}
 						data={collections}
 						actions={CollectionActions}
 					/>
-				</CardDescription>
+				</CardContent>
 			</Card>
 		</div>
 	)

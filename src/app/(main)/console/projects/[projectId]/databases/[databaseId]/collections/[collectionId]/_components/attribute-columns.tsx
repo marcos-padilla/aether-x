@@ -1,6 +1,5 @@
 'use client'
 
-import CreateDatabaseForm from '@/components/forms/create-database-form'
 import CustomModal from '@/components/modals/custom-modal'
 import {
 	AlertDialog,
@@ -25,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/use-toast'
 import { deleteDatabase } from '@/controllers/database-controller'
-import { ExtendedDatabase } from '@/lib/types'
+import { ExtendedAttribute, ExtendedDatabase } from '@/lib/types'
 import { useModal } from '@/providers/modal-provider'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
@@ -40,7 +39,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
+export const AttributeColumns: ColumnDef<ExtendedAttribute>[] = [
 	{
 		id: 'select',
 		header: ({ table }) => (
@@ -67,7 +66,7 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 		enableHiding: false,
 	},
 	{
-		accessorKey: 'name',
+		accessorKey: 'key',
 		header: ({ column }) => {
 			return (
 				<Button
@@ -78,18 +77,18 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 						)
 					}
 				>
-					Name
+					Key
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
 		},
 		cell: ({ row }) => {
-			const name = row.getValue('name') as string
-			return <div>{name}</div>
+			const key = row.getValue('key') as string
+			return <div>{key}</div>
 		},
 	},
 	{
-		accessorKey: 'Collections',
+		accessorKey: 'type',
 		header: ({ column }) => {
 			return (
 				<Button
@@ -100,16 +99,96 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 						)
 					}
 				>
-					Collections
+					Type
 					<ArrowUpDown className='ml-2 h-4 w-4' />
 				</Button>
 			)
 		},
 		cell: ({ row }) => {
-			const collections = row.getValue('Collections') as string[]
-			return <div>{collections.length}</div>
+			const type = row.getValue('type') as string
+			return <div>{type}</div>
 		},
 	},
+	{
+		accessorKey: 'defaultValue',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Default Value
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const defaultValue = row.getValue('defaultValue') as string
+			if (!defaultValue) return <div>NULL</div>
+			return <div>{defaultValue}</div>
+		},
+	},
+	{
+		accessorKey: 'isRequired',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Required
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const isRequired = row.getValue('isRequired') as boolean
+			return (
+				<Checkbox
+					disabled={true}
+					checked={isRequired}
+					className='!cursor-default'
+				/>
+			)
+		},
+	},
+	{
+		accessorKey: 'isUnique',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant='ghost'
+					onClick={() =>
+						column.toggleSorting(
+							column.getIsSorted() === 'asc'
+						)
+					}
+				>
+					Unique
+					<ArrowUpDown className='ml-2 h-4 w-4' />
+				</Button>
+			)
+		},
+		cell: ({ row }) => {
+			const isUnique = row.getValue('isUnique') as boolean
+			return (
+				<Checkbox
+					disabled={true}
+					checked={isUnique}
+					className='!cursor-default'
+				/>
+			)
+		},
+	},
+
 	{
 		accessorKey: 'createdAt',
 		header: ({ column }) => {
@@ -166,16 +245,7 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 			const rowData = row.original
 			return (
 				<div className='flex items-center gap-x-1'>
-					<Link
-						href={`/console/projects/${rowData.projectId}/databases/${rowData.id}`}
-						className={buttonVariants({
-							variant: 'ghost',
-							size: 'icon',
-						})}
-					>
-						<Eye size={18} />
-					</Link>
-					<CellActions rowData={rowData} />
+					{/* 	<CellActions rowData={rowData} /> */}
 				</div>
 			)
 		},
@@ -183,9 +253,9 @@ export const DatabaseColumns: ColumnDef<ExtendedDatabase>[] = [
 ]
 
 interface CellActionsProps {
-	rowData: ExtendedDatabase
+	rowData: ExtendedAttribute
 }
-
+/* 
 function CellActions({ rowData }: CellActionsProps) {
 	const { setOpen } = useModal()
 	const { toast } = useToast()
@@ -269,3 +339,4 @@ function CellActions({ rowData }: CellActionsProps) {
 		</AlertDialog>
 	)
 }
+ */

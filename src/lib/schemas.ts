@@ -1,3 +1,4 @@
+import { AttributeType } from '@prisma/client'
 import * as z from 'zod'
 
 export const signUpSchema = z
@@ -61,4 +62,28 @@ export const collectionSchema = z.object({
 		.refine((data) => /^[a-zA-Z0-9_]*$/.test(data), {
 			message: 'Collection name must be alphanumeric',
 		}),
+})
+
+export const attributeSchema = z.object({
+	key: z.string().min(1, { message: 'Attribute key is required' }),
+	type: z
+		.string()
+		.min(1, { message: 'Attribute type is required' })
+		.refine(
+			(_t) =>
+				[
+					'String',
+					'Number',
+					'Boolean',
+					'DateTime',
+					'Email',
+					'URL',
+				].includes(_t),
+			{
+				message: 'Invalid attribute type',
+			}
+		),
+	defaultValue: z.string().optional(),
+	isRequired: z.boolean().optional(),
+	isUnique: z.boolean().optional(),
 })

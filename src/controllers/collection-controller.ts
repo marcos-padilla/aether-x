@@ -159,3 +159,30 @@ export const deleteCollections = async (ids: string[]) => {
 		success: true,
 	}
 }
+
+export const getCollection = async (collectionId: string) => {
+	const user = await getCurrentUser()
+	if (!user) {
+		return redirect('/auth/sign-in')
+	}
+
+	const collection = await db.collection.findUnique({
+		where: {
+			id: collectionId,
+			Database: {
+				Project: {
+					userId: user.id,
+				},
+			},
+		},
+		include: {
+			Attributes: true,
+		},
+	})
+
+	if (!collection) {
+		return redirect('/404')
+	}
+
+	return collection
+}

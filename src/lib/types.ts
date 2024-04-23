@@ -1,5 +1,6 @@
 import * as z from 'zod'
 import {
+	attributeSchema,
 	collectionSchema,
 	databaseSchema,
 	platformSchema,
@@ -11,6 +12,7 @@ import { Session } from 'next-auth'
 import {
 	Account,
 	Attribute,
+	AttributeType,
 	Collection,
 	Database,
 	Feature,
@@ -31,6 +33,9 @@ export type ProjectSchema = z.infer<typeof projectSchema>
 export type PlatformSchema = z.infer<typeof platformSchema>
 export type DatabaseSchema = z.infer<typeof databaseSchema>
 export type CollectionSchema = z.infer<typeof collectionSchema>
+export type AttributeSchema = z.infer<typeof attributeSchema> & {
+	type: AttributeType
+}
 
 //Next auth
 export type ExtendedSession = Session & {
@@ -60,6 +65,8 @@ export type ExtendedCollection = Collection & {
 	Attributes: Attribute[]
 	Database: Database
 }
+
+export type ExtendedAttribute = Attribute & {}
 
 export type CustomServerResponse<T> =
 	| {
